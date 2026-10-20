@@ -1,4 +1,4 @@
-# llm-kit
+# soft-factory
 
 Prompts, slash commands, agents, skills and MCP configs for working with LLMs.
 

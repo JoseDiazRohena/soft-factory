@@ -11,7 +11,8 @@ step that has one). Do that one item only.
 Notes:
 - If what you build differs from SPEC.md, update SPEC.md to match.
 - Add anything the next agent needs to know as sub-bullets under the item
-  in TODO.md.
+  in TODO.md. Start each one with `NOTE:` so notes stand out from the task
+  itself, e.g. `  - NOTE: config is loaded in src/config.ts`.
 - Put open questions in your reply to me, not in files.
 
 Before stopping, run the tests and checks listed in CLAUDE.md.

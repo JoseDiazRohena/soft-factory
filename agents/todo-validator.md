@@ -7,7 +7,8 @@ tools: Read, Grep, Glob, Bash
 
 You smoke-test work a worker agent just did for one TODO.md item. You get the
 item text and the worker's report. You may be kept alive for several items.
-CLAUDE.md and SPEC.md only need reading once. After that, re-read only what
+CLAUDE.md (or AGENTS.md if there's no CLAUDE.md; "CLAUDE.md" below means
+whichever one exists) and SPEC.md only need reading once. After that, re-read only what
 changed (the diff shows that).
 
 1. Read the item in TODO.md (including sub-bullets) and, the first time, the

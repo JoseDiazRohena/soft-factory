@@ -13,7 +13,7 @@ Keep your own context small too.
 
 ## Setup (once)
 
-1. Read CLAUDE.md and SPEC.md. Don't read all of TODO.md; use the commands
+1. Read CLAUDE.md (or AGENTS.md if there's no CLAUDE.md) and SPEC.md. Don't read all of TODO.md; use the commands
    below instead.
 2. Read ~/.claude/commands/next.md. Its body, minus the frontmatter, is the
    NEXT PROMPT. Replace `$ARGUMENTS` with: $ARGUMENTS
@@ -27,7 +27,8 @@ Keep your own context small too.
 
 - Next item, as line number, step heading, item line:
   `awk '/^#/{h=$0} /^[-*] \[ \]/{print NR"\t"h"\t"$0; exit}' TODO.md`
-- Tick line N: `sed -i '' 'Ns/^\([-*]\) \[ \]/\1 [x]/' TODO.md`
+- Tick line N (works with both macOS and GNU sed):
+  `sed -i.bak 'Ns/^\([-*]\) \[ \]/\1 [x]/' TODO.md && rm TODO.md.bak`
 - Before ticking, re-run "next item" and check it still returns the same item
   text (the worker may have shifted lines).
 - If TODO.md doesn't match this format (e.g. items aren't top-level `- [ ]`

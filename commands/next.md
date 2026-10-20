@@ -3,7 +3,8 @@ description: Do the next unchecked TODO item, then stop for approval
 argument-hint: [extra instructions]
 ---
 
-Read CLAUDE.md, SPEC.md and TODO.md.
+Read CLAUDE.md, SPEC.md and TODO.md. If there's no CLAUDE.md, read
+AGENTS.md instead; "CLAUDE.md" below means whichever one exists.
 
 Do the next unchecked item in TODO.md (the first unchecked item in the first
 step that has one). Do that one item only.

@@ -17,6 +17,20 @@ harnesses, but the frontmatter is Claude-specific.
 Keep secrets out of this repo: put API keys in `.env` files (ignored) or
 reference environment variables in MCP configs.
 
+
+## What exactly are we doing here?
+
+### Orchestrator
+This is a command meant to enable [loop engineering](https://ghuntley.com/loop/) workflows. The insight behind loop engineering is to keep the context window small by creating a new agent every time a change is approved and committed. The agent starts fresh and uses the contents of a TODO.md and a SPEC.md at the root of what you're building, along with the state of the code, to figure out what's going on.
+
+One downside of this strategy is that it doesn't let us take advantage of the
+magic of *caching*. To improve the cache performance, we don't throw out subagents after a task. Rather, we wait until their context reaches a certain size before refreshing them.
+
+**Note:** Right now that threshold is purely *vibes*. Properly done, we would build some instrumentation and testing to find the best balance of 
+cache performance and quality. But that's for later!
+
+**How this one works:** Invoking the command when Claude Code is in your working repo turns your session into an orchestrator that creates worker and validator agents. Whenever a worker returns from a task, a validator checks the work and raises any issues for your review. It's not fully automated: you have the final say before committing.
+
 ## Install
 
 Clone the repo and run the install script. It symlinks every command, agent

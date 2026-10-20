@@ -7,7 +7,7 @@
 # Works on macOS, Linux and Windows (Git Bash or WSL).
 set -euo pipefail
 
-REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SRC="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/claude"
 TARGET="${1:-${CLAUDE_CONFIG_DIR:-$HOME/.claude}}"
 
 # Git Bash copies files on `ln -s` by default. Ask for real symlinks and fail
@@ -40,18 +40,28 @@ link() {
   linked=$((linked + 1))
 }
 
+# Make sure $1 is a folder. A broken symlink there (e.g. an old link to a
+# folder that has since moved) is removed first.
+ensure_dir() {
+  if [ -L "$1" ] && [ ! -e "$1" ]; then
+    echo "fix   $1 (removed broken symlink)"
+    rm "$1"
+  fi
+  mkdir -p "$1"
+}
+
 echo "Installing soft-factory into $TARGET"
 
 for kind in commands agents; do
-  mkdir -p "$TARGET/$kind"
-  for f in "$REPO/$kind"/*.md; do
+  ensure_dir "$TARGET/$kind"
+  for f in "$SRC/$kind"/*.md; do
     [ -e "$f" ] || continue
     link "$f" "$TARGET/$kind/$(basename "$f")"
   done
 done
 
-mkdir -p "$TARGET/skills"
-for d in "$REPO/skills"/*/; do
+ensure_dir "$TARGET/skills"
+for d in "$SRC/skills"/*/; do
   [ -d "$d" ] || continue
   d="${d%/}"
   link "$d" "$TARGET/skills/$(basename "$d")"

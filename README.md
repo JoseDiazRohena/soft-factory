@@ -2,13 +2,20 @@
 
 Prompts, slash commands, agents, skills and MCP configs for working with LLMs.
 
-| Folder      | What goes there                                              |
-|-------------|--------------------------------------------------------------|
-| `prompts/`  | Standalone prompts and prompt snippets                       |
-| `commands/` | Claude Code slash commands (`~/.claude/commands/*.md`)       |
-| `agents/`   | Claude Code subagent definitions (`~/.claude/agents/*.md`)   |
-| `skills/`   | Skills (one folder per skill, each with a `SKILL.md`)        |
-| `mcp/`      | MCP server configs and notes                                 |
+| Folder            | What goes there                                              |
+|-------------------|--------------------------------------------------------------|
+| `prompts/`        | Standalone prompts and prompt snippets (any harness)         |
+| `mcp/`            | MCP server configs and notes                                 |
+| `claude/commands/`| Claude Code slash commands (`~/.claude/commands/*.md`)       |
+| `claude/agents/`  | Claude Code subagent definitions (`~/.claude/agents/*.md`)   |
+| `claude/skills/`  | Skills (one folder per skill, each with a `SKILL.md`)        |
+
+Everything under `claude/` is written for Claude Code. `next.md` and the agent
+instructions also read `AGENTS.md`, so their text can be reused in other
+harnesses, but the frontmatter is Claude-specific.
+
+Keep secrets out of this repo: put API keys in `.env` files (ignored) or
+reference environment variables in MCP configs.
 
 ## Install
 
@@ -50,6 +57,3 @@ Claude Code on Windows itself, pass the Windows path:
 
 To uninstall, delete the symlinks from `~/.claude/commands`,
 `~/.claude/agents` and `~/.claude/skills`.
-
-Keep secrets out of this repo: put API keys in `.env` files (ignored) or
-reference environment variables in MCP configs.

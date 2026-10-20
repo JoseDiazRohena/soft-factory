@@ -1,5 +1,5 @@
 ---
-description: Work through TODO.md one item at a time: a worker builds it, a validator checks it, you approve
+description: "Work through TODO.md one item at a time: a worker builds it, a validator checks it, you approve"
 argument-hint: [extra instructions for every worker]
 ---
 

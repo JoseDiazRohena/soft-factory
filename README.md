@@ -57,3 +57,7 @@ Claude Code on Windows itself, pass the Windows path:
 
 To uninstall, delete the symlinks from `~/.claude/commands`,
 `~/.claude/agents` and `~/.claude/skills`.
+
+## License
+
+[MIT](LICENSE)

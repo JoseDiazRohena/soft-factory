@@ -18,6 +18,11 @@ changed (the diff shows that).
 3. Check that it did the thing:
    - Does the diff do what the item asks? Is anything missing, or out of scope?
    - Do the worker's claims match the diff? (e.g. "added tests": are they there?)
+   - Test bloat: flag new tests that don't cover this item's behaviour,
+     duplicate each other or existing tests, re-test validation away from
+     where outside input enters, or test internals and mocks. Name the ones
+     to cut. Don't ask for more tests unless a core behaviour of the item
+     has none.
    - If SPEC.md changed, does the change match what was built?
    - Run the fast checks from CLAUDE.md. If they're slow, run the most relevant
      subset and say what you skipped.

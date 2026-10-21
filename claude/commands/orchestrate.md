@@ -21,7 +21,8 @@ Keep your own context small too.
 4. Keep track of: `worker` (agent id, items done, last token count, step),
    `validator` (agent id, items done, last token count). Both start empty.
    Also track `last_active`: right after any worker or validator returns, run
-   `date +%s` and record the result.
+   `date +%s` and record the result. And track `session_items` (items
+   committed in this session, starts at 0).
 
 ## TODO.md commands
 
@@ -58,6 +59,37 @@ the last agent ran, so starting fresh agents"). You keep going as you are;
 your own context is small enough that reloading it is cheap.
 
 When you start a fresh agent, just stop messaging the old one.
+
+## Your own context
+
+Long sessions drift: once the session is compacted, the summary loses details
+of these instructions and of the run so far. Everything you need lives in
+TODO.md, SPEC.md and git, so a fresh session can pick up where this one left
+off. Suggest one before compaction happens.
+
+Measure your own context (the last reply's input tokens, read from this
+session's transcript):
+
+    d="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/$(pwd | sed 's/[^A-Za-z0-9]/-/g')"; f=$(ls -t "$d"/*.jsonl | head -1); grep '"type":"assistant"' "$f" | tail -1 | grep -oE '"(input_tokens|cache_creation_input_tokens|cache_read_input_tokens)":[0-9]+' | head -3 | awk -F: '{s+=$2} END{print s}'
+
+Run it after every commit. Suggest a fresh session when any of these hold:
+- the result is over ~100000, or
+- the command fails or prints nothing, and `session_items` is 8 or more, or
+- this session has been compacted (your context starts with a summary of
+  earlier conversation instead of the setup steps), or
+- the cache expired (see above) and the result is over ~60000, since
+  reloading a big context costs about as much as starting over.
+
+To suggest it, stop after the commit (the tree is clean) and say:
+
+    Context is at ~<N>k after <session_items> items. To avoid drift, start a
+    fresh session: run /clear, then /orchestrate <same arguments>. Or reply
+    "continue" to keep going here.
+
+If the user says "continue", don't suggest it again until the context has
+grown another ~40k. If you notice you were compacted, re-read this command
+file (~/.claude/commands/orchestrate.md) before doing anything else, so you
+follow the full rules rather than the summary of them.
 
 ## Loop
 
@@ -101,7 +133,8 @@ Record the token count and +1 item.
     **SPEC changes:** …
     **Open questions:** worker's questions, verbatim
     **Agents:** worker <new (reason) | continued, item N>, ~<tokens>k ·
-    validator <new (reason) | continued, item N>, ~<tokens>k
+    validator <new (reason) | continued, item N>, ~<tokens>k ·
+    orchestrator ~<context>k (from the last measurement)
     Reply: approve / changes: <feedback> / skip / stop / fresh
 
 The reason for a new agent is one of: first item, new step, token limit,
@@ -113,8 +146,10 @@ short, since everything you print stays in your context.
 
 **5. Act on the reply.**
 - **approve**: tick the item (see TODO.md commands). Commit everything for the
-  item in one commit with a message that names the item. Go straight back to
-  step 1 without asking.
+  item in one commit with a message that names the item. Add 1 to
+  `session_items` and measure your context (see "Your own context"). If it's
+  time for a fresh session, suggest it and stop. Otherwise go straight back
+  to step 1 without asking.
 - **changes: …**: send the feedback to the current worker with SendMessage, then
   send the new report to the current validator with SendMessage, asking it to
   re-check. Go back to step 4. If the cache has expired (see above), start a

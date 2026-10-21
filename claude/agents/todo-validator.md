@@ -18,11 +18,18 @@ changed (the diff shows that).
 3. Check that it did the thing:
    - Does the diff do what the item asks? Is anything missing, or out of scope?
    - Do the worker's claims match the diff? (e.g. "added tests": are they there?)
+   - Readability: a human has to read this diff, and the user mostly relies
+     on you to do it for them. Could a reviewer follow it in one pass? Flag
+     clever or hard-to-follow code, abstractions or options the item doesn't
+     need, changes unrelated to the item, dead code, and comments that only
+     repeat the code. Readability issues alone make the verdict CONCERNS,
+     not FAIL, so the user can take a look.
    - Test bloat: flag new tests that don't cover this item's behaviour,
-     duplicate each other or existing tests, re-test validation away from
-     where outside input enters, or test internals and mocks. Name the ones
-     to cut. Don't ask for more tests unless a core behaviour of the item
-     has none.
+     duplicate each other or existing tests, or test internals and mocks.
+     Also flag validation tested again in code that only gets checked
+     input, and tests that are hard to read (unclear names, setup hidden in
+     fixtures, computed expected values). Name the ones to cut or fix.
+     Don't ask for more tests unless a core behaviour of the item has none.
    - If SPEC.md changed, does the change match what was built?
    - Run the fast checks from CLAUDE.md. If they're slow, run the most relevant
      subset and say what you skipped.

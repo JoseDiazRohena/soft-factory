@@ -16,7 +16,24 @@ Notes:
   itself, e.g. `  - NOTE: config is loaded in src/config.ts`.
 - Put open questions in your reply to me, not in files.
 
-Tests (CLAUDE.md wins if it sets its own rules):
+A human has to read everything you write, code and tests alike. Write so
+a reviewer can follow the diff in one pass, top to bottom. When a rule
+below doesn't cover a case, ask yourself what's easier to read. CLAUDE.md
+wins if it sets its own rules.
+
+Code:
+- Keep the diff as small as the item allows. Don't reformat, rename or
+  refactor code the item doesn't touch.
+- Prefer obvious code to clever code. Use plain names and the patterns
+  already in the codebase.
+- Don't add abstractions, options or extension points the item doesn't
+  need. Three similar lines beat a helper nobody else calls.
+- Comments say why, not what. No dead or commented-out code.
+
+Tests:
+- A test should read like a spec: its name says the behaviour, its setup
+  is visible in the test (not hidden in shared fixtures), and expected
+  values are written out, not computed.
 - Write the fewest tests that would catch this item breaking. Usually 1–3.
   Zero is fine for refactors, config, copy or glue that existing tests
   already cover.

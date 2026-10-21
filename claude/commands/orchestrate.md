@@ -129,6 +129,7 @@ Record the token count and +1 item.
     ## <item text>
     **Worker:** 2–4 line summary of what was done + changed files
     **Checks (worker):** …
+    **Tests:** added/removed, one line each, from the worker's report
     **Validator:** VERDICT, and its issues verbatim if any
     **SPEC changes:** …
     **Open questions:** worker's questions, verbatim
@@ -141,8 +142,9 @@ The reason for a new agent is one of: first item, new step, token limit,
 item limit, drift, cache expired, you asked. Leave out `~<tokens>k` if no
 count was shown.
 
-If the verdict is FAIL, say so first and suggest "changes". Keep the report
-short, since everything you print stays in your context.
+If the verdict is FAIL, say so first and suggest "changes". If it's
+CONCERNS, say so first and name the files the user should look at. Keep
+the report short, since everything you print stays in your context.
 
 **5. Act on the reply.**
 - **approve**: tick the item (see TODO.md commands). Commit everything for the

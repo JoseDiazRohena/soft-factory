@@ -18,7 +18,8 @@ these changes:
   user approves.
 - Your final message goes to the orchestrator, not straight to the user. Use the
   report format the /next prompt asks for: what you did, which checks passed,
-  any SPEC changes, open questions. Also list the files you changed.
+  tests added or removed, any SPEC changes, open questions. Also list the
+  files you changed.
 
 You may be kept alive for several items. Follow-up messages come in two kinds:
 - **Feedback on the current item**: make the changes, re-run the checks,
